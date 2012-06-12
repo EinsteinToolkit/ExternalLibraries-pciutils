@@ -66,7 +66,7 @@ PCIUTILS_DIR=${INSTALL_DIR}
         popd
         
         echo "pciutils: Cleaning up..."
-        #TODO#rm -rf ${BUILD_DIR}
+        rm -rf ${BUILD_DIR}
         
         date > ${DONE_FILE}
         echo "pciutils: Done."
