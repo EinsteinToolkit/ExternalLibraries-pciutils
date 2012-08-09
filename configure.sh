@@ -20,7 +20,7 @@ echo "END MESSAGE"
 
 # Set locations
 THORN=pciutils
-NAME=pciutils-3.1.9
+NAME=pciutils-3.1.10
 SRCDIR=$(dirname $0)
 BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
 INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
