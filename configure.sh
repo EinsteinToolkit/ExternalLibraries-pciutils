@@ -52,7 +52,7 @@ PCIUTILS_DIR=${INSTALL_DIR}
         
         echo "pciutils: Unpacking archive..."
         pushd ${BUILD_DIR}
-        ${TAR} xzf ${SRCDIR}/dist/${NAME}.tar.gz
+        ${TAR?} xzf ${SRCDIR}/dist/${NAME}.tar.gz
         
         echo "pciutils: Configuring..."
         cd ${NAME}
