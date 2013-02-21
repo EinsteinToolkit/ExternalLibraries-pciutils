@@ -59,7 +59,7 @@ PCIUTILS_DIR=${INSTALL_DIR}
         # pciutils does not have a configure script; doing nothing
         
         echo "pciutils: Building..."
-        ${MAKE} ZLIB=yes DNS=no SHARED=no
+        ${MAKE} PREFIX=${PCIUTILS_DIR} ZLIB=yes DNS=no SHARED=no
         
         echo "pciutils: Installing..."
         ${MAKE} PREFIX=${PCIUTILS_DIR} install install-lib
@@ -82,9 +82,15 @@ fi
 
 
 
-PCIUTILS_INC_DIRS="${PCIUTILS_DIR}/include"
-PCIUTILS_LIB_DIRS="${PCIUTILS_DIR}/lib"
-PCIUTILS_LIBS='pci'
+#PCIUTILS_INC_DIRS="${PCIUTILS_DIR}/include"
+#PCIUTILS_LIB_DIRS="${PCIUTILS_DIR}/lib"
+#PCIUTILS_LIBS='pci'
+
+export PKG_CONFIG_PATH=${PCIUTILS_DIR}/lib/pkgconfig:${PKG_CONFIG_PATH}
+
+PCIUTILS_INC_DIRS="$(echo '' $(pkg-config libpci --cflags) '' | sed -e 's+ -I/include + +g;s+ -I/usr/include + +g;s+ -I/usr/local/include + +g' | sed -e 's/ -I/ /g')"
+PCIUTILS_LIB_DIRS="$(echo '' $(pkg-config libpci --libs) '' | sed -e 's/ -l[^ ]*/ /g' | sed -e 's+ -L/lib + +g;s+ -L/lib64 + +g;s+ -L/usr/lib + +g;s+ -L/usr/lib64 + +g;s+ -L/usr/local/lib + +g;s+ -L/usr/local/lib64 + +g' | sed -e 's/ -L/ /g')"
+PCIUTILS_LIBS="$(echo '' $(pkg-config libpci --libs) '' | sed -e 's/ -[^l][^ ]*/ /g' | sed -e 's/ -l/ /g')"
 
 
 
