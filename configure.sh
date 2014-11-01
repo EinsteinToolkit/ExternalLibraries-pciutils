@@ -21,7 +21,7 @@ echo "END MESSAGE"
 # Set locations
 THORN=pciutils
 NAME=pciutils-3.2.0
-SRCDIR=$(dirname $0)
+SRCDIR="$(dirname $0)"
 BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
 INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
 DONE_FILE=${SCRATCH_BUILD}/done/${THORN}
@@ -88,9 +88,16 @@ fi
 
 export PKG_CONFIG_PATH=${PCIUTILS_DIR}/lib/pkgconfig:${PKG_CONFIG_PATH}
 
-PCIUTILS_INC_DIRS="$(echo '' $(pkg-config libpci --cflags) '' | sed -e 's+ -I/include + +g;s+ -I/usr/include + +g;s+ -I/usr/local/include + +g' | sed -e 's/ -I/ /g')"
-PCIUTILS_LIB_DIRS="$(echo '' $(pkg-config libpci --libs) '' | sed -e 's/ -l[^ ]*/ /g' | sed -e 's+ -L/lib + +g;s+ -L/lib64 + +g;s+ -L/usr/lib + +g;s+ -L/usr/lib64 + +g;s+ -L/usr/local/lib + +g;s+ -L/usr/local/lib64 + +g' | sed -e 's/ -L/ /g')"
-PCIUTILS_LIBS="$(echo '' $(pkg-config libpci --libs) '' | sed -e 's/ -[^l][^ ]*/ /g' | sed -e 's/ -l/ /g')"
+inc_dirs="$(pkg-config libpci --cflags)"
+lib_dirs="$(pkg-config libpci --libs)"
+libs="$(pkg-config libpci --libs)"
+# Translate option flags into Cactus options:
+# - for INC_DIRS, remove -I prefix from flags
+# - for LIB_DIRS, remove all -l flags, and remove -L prefix from flags
+# - for LIBS, keep only -l flags, and remove -l prefix from flags
+PCIUTILS_INC_DIRS="$(echo '' $(for flag in $inc_dirs; do echo '' $flag; done | sed -e 's/^ -I//'))"
+PCIUTILS_LIB_DIRS="$(echo '' $(for flag in $lib_dirs; do echo '' $flag; done | grep -v '^ -l' | sed -e 's/^ -L//'))"
+PCIUTILS_LIBS="$(echo '' $(for flag in $libs; do echo '' $flag; done | grep '^ -l' | sed -e 's/^ -l//'))"
 
 
 
@@ -98,9 +105,11 @@ PCIUTILS_LIBS="$(echo '' $(pkg-config libpci --libs) '' | sed -e 's/ -[^l][^ ]*/
 # Configure Cactus
 ################################################################################
 
+PCIUTILS_INC_DIRS="$(${CCTK_HOME}/lib/sbin/strip-incdirs.sh ${PCIUTILS_INC_DIRS})"
+PCIUTILS_LIB_DIRS="$(${CCTK_HOME}/lib/sbin/strip-libdirs.sh ${PCIUTILS_LIB_DIRS})"
+
 # Pass options to Cactus
 echo "BEGIN MAKE_DEFINITION"
-echo "HAVE_PCIUTILS     = 1"
 echo "PCIUTILS_DIR      = ${PCIUTILS_DIR}"
 echo "PCIUTILS_INC_DIRS = ${PCIUTILS_INC_DIRS}"
 echo "PCIUTILS_LIB_DIRS = ${PCIUTILS_LIB_DIRS}"
