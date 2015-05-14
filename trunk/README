@@ -1,0 +1,18 @@
+Cactus Code Thorn pciutils
+Author(s)    : Erik Schnetter
+Maintainer(s): Cactus team
+Licence      : GPL
+--------------------------------------------------------------------------
+
+1. Purpose
+
+Distribute the PCI Utilities; see <http://mj.ucw.cz/sw/pciutils/>.
+
+
+
+From the pciutils web site:
+
+The PCI Utilities are a collection of programs for inspecting and
+manipulating configuration of PCI devices, all based on a common
+portable library libpci which offers access to the PCI configuration
+space on a variety of operating systems.
