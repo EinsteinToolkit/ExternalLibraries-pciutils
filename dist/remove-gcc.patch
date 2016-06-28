@@ -1,0 +1,23 @@
+diff -urw pciutils-3.2.0.orig/Makefile pciutils-3.2.0/Makefile
+--- pciutils-3.2.0.orig/Makefile	2013-04-19 05:58:49.000000000 -0700
++++ pciutils-3.2.0/Makefile	2014-09-23 09:03:24.769289000 -0700
+@@ -1,9 +1,6 @@
+ # Makefile for The PCI Utilities
+ # (c) 1998--2013 Martin Mares <mj@ucw.cz>
+ 
+-OPT=-O2
+-CFLAGS=$(OPT) -Wall -W -Wno-parentheses -Wstrict-prototypes -Wmissing-prototypes
+-
+ VERSION=3.2.0
+ DATE=2013-04-19
+ 
+@@ -42,9 +39,6 @@
+ INSTALL=install
+ DIRINSTALL=install -d
+ STRIP=-s
+-CC=$(CROSS_COMPILE)gcc
+-AR=$(CROSS_COMPILE)ar
+-RANLIB=$(CROSS_COMPILE)ranlib
+ 
+ # Base name of the library (overriden on NetBSD, which has its own libpci)
+ LIBNAME=libpci
