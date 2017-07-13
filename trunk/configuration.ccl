@@ -1,0 +1,9 @@
+# Configuration definitions for thorn pciutils
+
+REQUIRES zlib
+
+PROVIDES pciutils
+{
+  SCRIPT configure.sh
+  LANG bash
+}
