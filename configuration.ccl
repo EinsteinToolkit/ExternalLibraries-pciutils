@@ -6,4 +6,5 @@ PROVIDES pciutils
 {
   SCRIPT configure.sh
   LANG bash
+  OPTIONS PCIUTILS_INSTALL_DIR
 }

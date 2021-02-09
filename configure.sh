@@ -27,6 +27,17 @@ SRCDIR="$(dirname $0)"
 BUILD_DIR=${SCRATCH_BUILD}/build/${THORN}
 INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
 DONE_FILE=${SCRATCH_BUILD}/done/${THORN}
+if [ -z "${PCIUTILS_INSTALL_DIR}" ]; then
+    echo "BEGIN MESSAGE"
+    echo "pciutils install directory, PCIUTILS_INSTALL_DIR, not set. Installing in the default configuration location. "
+    echo "END MESSAGE"
+    INSTALL_DIR=${SCRATCH_BUILD}/external/${THORN}
+else
+    echo "BEGIN MESSAGE"
+    echo "pciutils install directory, PCIUTILS_INSTALL_DIR, selected. Installing pciutils at ${PCIUTILS_INSTALL_DIR} "
+    echo "END MESSAGE"
+    INSTALL_DIR=${PCIUTILS_INSTALL_DIR}
+fi
 PCIUTILS_DIR=${INSTALL_DIR}
 
 (
