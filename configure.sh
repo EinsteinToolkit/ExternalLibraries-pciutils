@@ -41,7 +41,6 @@ fi
 PCIUTILS_DIR=${INSTALL_DIR}
 
 (
-    exec >&2                    # Redirect stdout to stderr
     if [ "$(echo ${VERBOSE} | tr '[:upper:]' '[:lower:]')" = 'yes' ]; then
         set -x                  # Output commands
     fi
@@ -50,9 +49,13 @@ PCIUTILS_DIR=${INSTALL_DIR}
     if [ -e ${DONE_FILE} -a ${DONE_FILE} -nt ${SRCDIR}/dist/${NAME}.tar.gz \
                          -a ${DONE_FILE} -nt ${SRCDIR}/configure.sh ]
     then
+        echo "BEGIN MESSAGE"
         echo "pciutils: The enclosed pciutils library has already been built; doing nothing"
+        echo "END MESSAGE"
     else
+        echo "BEGIN MESSAGE"
         echo "pciutils: Building enclosed pciutils library"
+        echo "END MESSAGE"
         
         if [ x$TAR = x ] ; then
           echo 'BEGIN ERROR'
@@ -76,31 +79,45 @@ PCIUTILS_DIR=${INSTALL_DIR}
             export OBJECT_MODE=64
         fi
         
+        echo "BEGIN MESSAGE"
         echo "pciutils: Preparing directory structure..."
+        echo "END MESSAGE"
         mkdir build external done 2> /dev/null || true
         rm -rf ${BUILD_DIR} ${INSTALL_DIR}
         mkdir ${BUILD_DIR} ${INSTALL_DIR}
         
+        echo "BEGIN MESSAGE"
         echo "pciutils: Unpacking archive..."
-        pushd ${BUILD_DIR}
+        echo "END MESSAGE"
+        pushd >/dev/null ${BUILD_DIR}
         ${TAR?} xzf ${SRCDIR}/dist/${NAME}.tar.gz
         
+        echo "BEGIN MESSAGE"
         echo "pciutils: Configuring..."
+        echo "END MESSAGE"
         cd ${NAME}
         # pciutils does not have a configure script; doing nothing
         
+        echo "BEGIN MESSAGE"
         echo "pciutils: Building..."
         ${MAKE} PREFIX="${PCIUTILS_DIR}" CC="${CC}" CFLAGS="${CFLAGS}" OPT= LDFLAGS="${LDFLAGS}" LDLIBS="${LDLIBS}" AR="${AR}" RANLIB="${RANLIB}" ZLIB=yes DNS=no SHARED=no
+        echo "END MESSAGE"
         
+        echo "BEGIN MESSAGE"
         echo "pciutils: Installing..."
         ${MAKE} PREFIX=${PCIUTILS_DIR} install install-lib
-        popd
+        popd >/dev/null
+        echo "END MESSAGE"
         
+        echo "BEGIN MESSAGE"
         echo "pciutils: Cleaning up..."
+        echo "END MESSAGE"
         rm -rf ${BUILD_DIR}
         
         date > ${DONE_FILE}
+        echo "BEGIN MESSAGE"
         echo "pciutils: Done."
+        echo "END MESSAGE"
     fi
 )
 
