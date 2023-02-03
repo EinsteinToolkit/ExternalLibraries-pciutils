@@ -71,6 +71,13 @@ PCIUTILS_DIR=${INSTALL_DIR}
           echo 'END ERROR'
           exit 1
         fi
+        if [ x"`uname -s`" = xDarwin ] ; then
+          echo 'BEGIN ERROR'
+          echo "Unfortunately, your OS (`uname -s`) is not supported by the PCI Library,"
+          echo "please remove ${THORN} from your thornlist."
+          echo 'END ERROR'
+          exit 1
+        fi
 
         export LDFLAGS="${CFLAGS} ${LDFLAGS}"
         export LDLIBS="-lz"
